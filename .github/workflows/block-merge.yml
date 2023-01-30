@@ -13,4 +13,20 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'WIP')
         run: |
           echo "This pull request contains a blocked label and cannot be merged."
-          exit 1
+          # Set the pull request status to failure
+          echo ::set-output name=status::failure
+      - name: Set Pull Request Status
+        uses: actions/github-script@0.10.0
+        if: steps.block_merge.outputs.status == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          github-script: |
+            const pullRequest = context.payload.pull_request
+            const repository = context.repo()
+            const octokit = new github.GitHub(GITHUB_TOKEN)
+            octokit.pulls.update({
+              ...repository,
+              pull_number: pullRequest.number,
+              state: 'failure',
+            })
