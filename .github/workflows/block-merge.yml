@@ -1,0 +1,16 @@
+name: Block Merge Requests on Labels
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  block_merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if merge request contains blocked label
+        if: contains(github.event.pull_request.labels.*.name, 'WIP')
+        run: |
+          echo "This pull request contains a blocked label and cannot be merged."
+          exit 1
