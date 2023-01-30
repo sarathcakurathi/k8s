@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Check if merge request contains blocked label
         id: check_label
         if: contains(github.event.pull_request.labels.*.name, 'WIP')
