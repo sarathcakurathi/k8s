@@ -16,7 +16,7 @@ jobs:
           # Set the pull request status to failure
           echo ::set-output name=status::failure
       - name: Set Pull Request Status
-        uses: actions/github-script@0.10.0
+        uses: actions/github-script@v6
         if: steps.block_merge.outputs.status == 'failure'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
