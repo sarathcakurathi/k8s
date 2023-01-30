@@ -10,14 +10,15 @@ jobs:
 
     steps:
       - name: Check if merge request contains blocked label
+        id: check_label
         if: contains(github.event.pull_request.labels.*.name, 'WIP')
         run: |
           echo "This pull request contains a blocked label and cannot be merged."
-          # Set the pull request status to failure
-          echo ::set-output name=status::failure
+        outputs:
+          status: failure
       - name: Set Pull Request Status
-        uses: actions/github-script@v6
-        if: steps.block_merge.outputs.status == 'failure'
+        uses: actions/github-script@0.10.0
+        if: steps.check_label.outputs.status == 'failure'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
