@@ -20,7 +20,7 @@ jobs:
           echo "TO_BLOCK=yes" >> $GITHUB_OUTPUT
           
       - name: Set Pull Request Status
-        uses: actions/github-script@0.10.0
+        uses: actions/github-script@v6
         if: steps.check_label.outputs.TO_BLOCK == 'yes'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
