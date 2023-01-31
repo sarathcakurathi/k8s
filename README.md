@@ -11,3 +11,5 @@
 ### Pod
 
 ### ReplicaSet
+
+### DaemonSet
