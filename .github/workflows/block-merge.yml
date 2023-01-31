@@ -25,7 +25,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          github-script: |
+          script: |
             const pullRequest = context.payload.pull_request
             const repository = context.repo()
             const octokit = new github.GitHub(GITHUB_TOKEN)
