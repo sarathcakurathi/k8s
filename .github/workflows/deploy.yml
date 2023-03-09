@@ -28,7 +28,7 @@ jobs:
       - name: Get changed files
         run: |
           ls -ltra
-          files=$(git diff --name-only HEAD^ HEAD)
+          files=$(git ls-files --modified)
           has_change=$(echo "${files}" | grep ".github/[a-z]*flows" | wc -l)
           echo "has_change: ${has_change}"
         
