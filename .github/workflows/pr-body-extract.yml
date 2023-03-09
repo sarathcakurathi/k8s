@@ -11,6 +11,7 @@ jobs:
   pr_created:
     runs-on: ubuntu-latest
     outputs:
+      test: 5
       has-deploy-context: ${{ steps.pr-body.outputs.has_deployment_context }}
       pr-deployment-context: ${{ steps.pr-body.outputs.pr_deployment_context }}
     steps:
@@ -36,7 +37,9 @@ jobs:
     needs: pr_created
     steps:
       - name: Get output
-        if: ${{ needs.pr_created.outputs.has-deploy-context }} == "true"
+        if: |
+          ${{ needs.pr_created.outputs.has-deploy-context }} == "true" ||
+          ${{ needs.pr_created.outputs.test }} > 0
         run: |
           echo "has: ${{ needs.pr_created.outputs.has-deploy-context }}"
           echo "pr: ${{ needs.pr_created.outputs.pr-deployment-context }}"
