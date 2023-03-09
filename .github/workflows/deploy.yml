@@ -17,6 +17,6 @@ jobs:
     steps:
       - name: Test workflow input
         run: |
-          echo "account-id - $INPUT_ACCOUNT-ID"
+          echo "account-id - ${INPUT_ACCOUNT-ID}"
         env:
           INPUT_ACCOUNT-ID: ${{ inputs.account-id }}
