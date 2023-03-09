@@ -6,21 +6,34 @@ on:
 jobs:
   get_info:
     runs-on: ubuntu-latest
+    outputs:
+      has_olrs_folder_change: ${{ steps.folder_check.outputs.has_change }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       
       - name: Get commit and file info
+        id: folde_check
         run: |
           # Get the pull request number
           PR_NUMBER=$(jq --raw-output .number "$GITHUB_EVENT_PATH")
-
+          TOTAL_FILES_CHANGED=()
           # Get the list of all commits in the pull request
           COMMITS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/commits")
           
           # Loop through the commits and get the list of files changed in each commit
           for COMMIT_SHA in $(echo "${COMMITS}" | jq -r ".[].sha"); do
-            FILES_CHANGED=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/commits/${COMMIT_SHA}" | jq -r '.files[].filename')
-            echo "Commit ${COMMIT_SHA} changed the following files:"
-            echo "${FILES_CHANGED}"
+            FILES_CHANGED=($(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/commits/${COMMIT_SHA}" | jq -r '.files[].filename'))
+            TOTAL_FILES_CHANGED=(${TOTAL_FILES_CHANGED[@]} ${FILES_CHANGED[@]})
           done
+          TOTAL_FILES_CHANGED=($(echo "${TOTAL_FILES_CHANGED[@]}" | tr ' ' '\n' | awk '!a[$0]++' | sort))
+          has_change=$(echo "${TOTAL_FILES_CHANGED[@]}" | grep "docs/[a-z]*.md" | wc -l)
+          echo "has_change=${has_change}" >> ${GITHUB_OUTPUT}
+          
+  get_output:
+    runs-on: ubuntu-latest
+    needs: get_info
+    steps:
+      - name: check output from get_info
+        run: |
+          echo "output for has change: ${{ needs.get_info.outputs.has_olrs_folder_change }}"
