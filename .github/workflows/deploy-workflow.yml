@@ -30,8 +30,6 @@ jobs:
              export ACCOUNT_ID=1234567890
           fi
           echo "account_id=${ACCOUNT_ID}" >> "$GITHUB_OUTPUT"
-        env:
-          INPUT_ENVIRONMENT: ${{ inputs.environment }}
   
   print-output:
     runs-on: ubuntu-latest
