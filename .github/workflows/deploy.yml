@@ -21,4 +21,9 @@ jobs:
       - name: Test workflow input
         run: |
           echo "account-id - ${INPUT_ACCOUNT_ID} - ${{ inputs.account-id }}"
+      - name: Get changed files
+        run: |
+          files=$(git ls-files --modified)
+          has_change=$(echo "${files}" | grep ".github/[a-z]*flows" | wc -l)
+          echo "has_change: ${has_change}"
         
