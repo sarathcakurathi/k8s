@@ -1,4 +1,4 @@
-name: Deployment Workflow Automated Runner
+name: Deployment > Workflow > Automated Runner
 
 on:
   workflow_call:
