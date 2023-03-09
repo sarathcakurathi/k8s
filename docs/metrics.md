@@ -60,3 +60,4 @@ kubectl top pod --namespace myns
 # Resource breakdown for a given pod
 kubectl top pod <pod_name> --namespace kube-system --containers
 ```
+
