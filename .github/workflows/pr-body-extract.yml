@@ -26,6 +26,7 @@ jobs:
           else
             echo "has_deployment_context=false" >> ${GITHUB_OUTPUT}
             echo "pr_deployment_context=${ephemeral_states[@]}" >> ${GITHUB_OUTPUT}
+          fi
    
   build:
     runs-on: ubuntu-latest
