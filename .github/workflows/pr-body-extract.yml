@@ -1,6 +1,8 @@
 name: Fetch PR body
 
 on:
+  pull_request_target:
+    types: [edited]
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [master]
