@@ -20,5 +20,5 @@ jobs:
     steps:
       - name: Test workflow input
         run: |
-          echo "account-id - ${INPUT_ACCOUNT_ID}"
+          echo "account-id - ${INPUT_ACCOUNT_ID} - ${{ github.event.inputs.account-id }}"
         
