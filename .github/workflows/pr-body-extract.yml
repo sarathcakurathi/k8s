@@ -14,5 +14,7 @@ jobs:
         
       - name: Get PR body
         run: |
-          body="${{ github.event.pull_request.body }}"
+          body='${{ github.event.pull_request.body }}'
           echo "$body"
+          ephemeral_states=($(echo "$body" | grep "DeploymentContext:" | cut -d' ' -f2- | jq -r '.ephemeral[]'))
+          echo "${ephemeral_states[@]}"
