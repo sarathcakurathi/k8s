@@ -2,19 +2,37 @@ name: Fetch PR body
 
 on:
   pull_request:
-    types: [opened]
+    branches: [master]
 
 jobs:
   pr_created:
     runs-on: ubuntu-latest
-
+    outputs:
+      has-deploy-context: ${{ steps.pr-body.outputs.has_deployment_context }}
+      pr-deployment-context: ${{ steps.pr-body.outputs.pr_deployment_context }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         
       - name: Get PR body
+        id: pr-body
         run: |
           body='${{ github.event.pull_request.body }}'
           echo "$body"
           ephemeral_states=($(echo "$body" | grep "DeploymentContext:" | cut -d' ' -f2- | jq -r '.ephemeral[]'))
-          echo "${ephemeral_states[@]}"
+          echo "ephemeral_states: ${ephemeral_states[@]}"
+          if [ ${#ephemeral_states[@]} -eq 0 ]; then
+            echo "has_deployment_context=false" >> ${GITHUB_OUTPUT}
+          else
+            echo "has_deployment_context=false" >> ${GITHUB_OUTPUT}
+            echo "pr_deployment_context=${ephemeral_states[@]}" >> ${GITHUB_OUTPUT}
+   
+  build:
+    runs-on: ubuntu-latest
+    needs: pr_created
+    steps:
+      - name: Get output
+        run: |
+          echo "has: ${{ needs.pr_created.outputs.has-deploy-context }}"
+          echo "pr: ${{ needs.pr_created.outputs.pr-deployment-context }}"
+          
