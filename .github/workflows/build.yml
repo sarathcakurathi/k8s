@@ -29,7 +29,7 @@ jobs:
           done
           TOTAL_FILES_CHANGED=($(echo "${TOTAL_FILES_CHANGED[@]}" | tr ' ' '\n' | awk '!a[$0]++' | sort))
           echo "after dedup: ${TOTAL_FILES_CHANGED[@]}"
-          has_change=$(echo "${TOTAL_FILES_CHANGED[@]}" | grep "docs/[a-z]*.md" | wc -l)
+          has_change=$(echo "${TOTAL_FILES_CHANGED[@]}" | tr ' ' '\n' | grep "docs/[a-z]*.md" | wc -l)
           echo "has_change value: ${has_change}"
           echo "has_change=${has_change}" >> ${GITHUB_OUTPUT}
           
