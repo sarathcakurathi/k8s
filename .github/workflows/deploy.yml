@@ -12,9 +12,10 @@ on:
 
 env:
   INPUT_ACCOUNT_ID: ${{ inputs.account-id }}
-          
+
 jobs:
   deployment_workflow_job:
+    environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +27,7 @@ jobs:
         
       - name: Get changed files
         run: |
+          ls -ltra
           files=$(git diff --name-only HEAD^ HEAD)
           has_change=$(echo "${files}" | grep ".github/[a-z]*flows" | wc -l)
           echo "has_change: ${has_change}"
