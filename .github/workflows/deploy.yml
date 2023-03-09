@@ -29,6 +29,7 @@ jobs:
         run: |
           ls -ltra
           files=$(git ls-files --modified)
+          echo "me: ${files}"
           has_change=$(echo "${files}" | grep ".github/[a-z]*flows" | wc -l)
           echo "has_change: ${has_change}"
         
