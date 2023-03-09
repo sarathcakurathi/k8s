@@ -27,7 +27,7 @@ jobs:
           if [ ${#ephemeral_states[@]} -eq 0 ]; then
             echo "has_deployment_context=false" >> ${GITHUB_OUTPUT}
           else
-            echo "has_deployment_context=false" >> ${GITHUB_OUTPUT}
+            echo "has_deployment_context=true" >> ${GITHUB_OUTPUT}
             echo "pr_deployment_context=${ephemeral_states[@]}" >> ${GITHUB_OUTPUT}
           fi
    
@@ -36,6 +36,7 @@ jobs:
     needs: pr_created
     steps:
       - name: Get output
+        if: ${{ needs.pr_created.outputs.has-deploy-context }} == "true"
         run: |
           echo "has: ${{ needs.pr_created.outputs.has-deploy-context }}"
           echo "pr: ${{ needs.pr_created.outputs.pr-deployment-context }}"
