@@ -25,9 +25,12 @@ jobs:
           for COMMIT_SHA in $(echo "${COMMITS}" | jq -r ".[].sha"); do
             FILES_CHANGED=($(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/commits/${COMMIT_SHA}" | jq -r '.files[].filename'))
             TOTAL_FILES_CHANGED=(${TOTAL_FILES_CHANGED[@]} ${FILES_CHANGED[@]})
+            echo "for commit: ${COMMIT_SHA}, ${TOTAL_FILES_CHANGED[@]}"
           done
           TOTAL_FILES_CHANGED=($(echo "${TOTAL_FILES_CHANGED[@]}" | tr ' ' '\n' | awk '!a[$0]++' | sort))
+          echo "after dedup: ${TOTAL_FILES_CHANGED[@]}"
           has_change=$(echo "${TOTAL_FILES_CHANGED[@]}" | grep "docs/[a-z]*.md" | wc -l)
+          echo "has_change value: ${has_change}"
           echo "has_change=${has_change}" >> ${GITHUB_OUTPUT}
           
   get_output:
