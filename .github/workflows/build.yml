@@ -1,0 +1,26 @@
+name: Get commit and file info
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  get_info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Get commit and file info
+        run: |
+          # Get the pull request number
+          PR_NUMBER=$(jq --raw-output .number "$GITHUB_EVENT_PATH")
+
+          # Get the list of all commits in the pull request
+          COMMITS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/commits")
+          
+          # Loop through the commits and get the list of files changed in each commit
+          for COMMIT_SHA in $(echo "${COMMITS}" | jq -r ".[].sha"); do
+            FILES_CHANGED=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/commits/${COMMIT_SHA}" | jq -r '.files[].filename')
+            echo "Commit ${COMMIT_SHA} changed the following files:"
+            echo "${FILES_CHANGED}"
+          done
