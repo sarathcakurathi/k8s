@@ -35,6 +35,7 @@ jobs:
           INPUT_ENVIRONMENT: ${{ inputs.environment }}
   
   print-output:
+    environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     needs: set-account-id
     steps:
