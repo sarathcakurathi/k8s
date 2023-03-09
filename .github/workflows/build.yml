@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Get commit and file info
-        id: folde_check
+        id: folder_check
         run: |
           # Get the pull request number
           PR_NUMBER=$(jq --raw-output .number "$GITHUB_EVENT_PATH")
