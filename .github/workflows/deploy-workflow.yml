@@ -24,18 +24,25 @@ jobs:
       - name: Set account id
         id: determine_account_id
         run: |
+          echo Account ID in set-account-id - ${{ github.event.inputs.environment }}
           if [ "${INPUT_ENVIRONMENT}" == "dev" ] || 
              [ "${INPUT_ENVIRONMENT}" == "qa" ] ||
              [ "${INPUT_ENVIRONMENT}" == "qaa" ]; then
              export ACCOUNT_ID=1234567890
           fi
           echo "account_id=${ACCOUNT_ID}" >> "$GITHUB_OUTPUT"
-        env:
-          INPUT_ENVIRONMENT: ${{ inputs.environment }}
   
   print-output:
     runs-on: ubuntu-latest
-
+    needs: set-account-id
     steps:
       - name: Print output
-        run: echo Account ID - ${{ needs.set-account-id.outputs.account_id }}
+        run: |
+          echo Account ID in set-account-id - ${{ github.event.inputs.environment }}
+          echo Account ID from outputs - ${{ needs.set-account-id.outputs.account_id }}
+
+  trigger-deployment-workflow:
+    uses: ./.github/workflows/deploy.yml
+    needs: set-account-id
+    with:
+      account-id: ${{ needs.set-account-id.outputs.account_id }}
