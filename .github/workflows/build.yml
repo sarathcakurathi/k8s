@@ -1,7 +1,7 @@
 name: Get commit and file info
 on:
   pull_request:
-    types: [opened]
+    branches: [ master ]
 
 jobs:
   get_info:
