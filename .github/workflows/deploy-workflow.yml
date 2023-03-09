@@ -1,0 +1,34 @@
+name: Deployment Dispatcher
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: "Select environment"
+        options:
+        - dev
+        - qa
+        - qaa
+
+env:
+  PROJECT: "k8s"
+
+jobs:
+  set-account-id:
+    runs-on: ubuntu-latest
+
+    outputs:
+      account_id: ${{ steps.determine_account_id.outputs.account_id }}
+    steps:
+      - name: Set account id
+        id: determine_account_id
+        run: |
+          if [ "${INPUT_ENVIRONMENT}" == "dev" ] || 
+             [ "${INPUT_ENVIRONMENT}" == "qa" ] ||
+             [ "${INPUT_ENVIRONMENT}" == "qaa" ]; then
+             export ACCOUNT_ID=1234567890
+          fi
+          echo "account_id=${ACCOUNT_ID}" >> "$GITHUB_OUTPUT"
+        env:
+          INPUT_ENVIRONMENT: ${{ inputs.environment }}
