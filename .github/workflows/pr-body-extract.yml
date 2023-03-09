@@ -43,4 +43,10 @@ jobs:
         run: |
           echo "has: ${{ needs.pr_created.outputs.has-deploy-context }}"
           echo "pr: ${{ needs.pr_created.outputs.pr-deployment-context }}"
+  compile:
+    runs-on: ubuntu-lates
+    needs: pr_created
+    steps:
+      - name: Test
+        run: ehco hello
           
