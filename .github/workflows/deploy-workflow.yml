@@ -24,15 +24,13 @@ jobs:
       - name: Set account id
         id: determine_account_id
         run: |
-          echo Account ID in set-account-id - ${{ github.event.inputs.environment }}
-          if [ "${INPUT_ENVIRONMENT}" == "dev" ] || 
-             [ "${INPUT_ENVIRONMENT}" == "qa" ] ||
-             [ "${INPUT_ENVIRONMENT}" == "qaa" ]; then
+          echo env in set-account-id - ${{ github.event.inputs.environment }}
+          if [ "${{ github.event.inputs.environment }}" == "dev" ] || 
+             [ "${{ github.event.inputs.environment }}" == "qa" ] ||
+             [ "${{ github.event.inputs.environment }}" == "qaa" ]; then
              export ACCOUNT_ID=1234567890
           fi
           echo "account_id=${ACCOUNT_ID}" >> "$GITHUB_OUTPUT"
-        env:
-          INPUT_ENVIRONMENT: ${{ inputs.environment }}
   
   print-output:
     runs-on: ubuntu-latest
