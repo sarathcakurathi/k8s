@@ -32,7 +32,7 @@ jobs:
              export ACCOUNT_ID=1234567890
           fi
           echo "account_id=${ACCOUNT_ID}" >> "$GITHUB_OUTPUT"
-          echo "matrix={\"include\":[\"folder1\", \"folder2\"]}" >> "$GITHUB_OUPUT"
+          echo "matrix={\"include\":[\"folder1\", \"folder2\"]}" >> "$GITHUB_OUTPUT"
   
   print-output:
     runs-on: ubuntu-latest
