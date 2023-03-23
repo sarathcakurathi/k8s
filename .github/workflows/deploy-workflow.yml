@@ -50,7 +50,8 @@ jobs:
     steps:
       - name: Test matrix
         run: |
-          echo "Folders: ${{ needs.set-account-id.outputs.folders }}"
+          mine=${{ needs.set-account-id.outputs.folders }}
+          echo "Folders: ${mine[@]} ${mine[0]}"
     
 
   trigger-deployment-workflow:
