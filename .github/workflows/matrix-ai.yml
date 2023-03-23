@@ -1,0 +1,13 @@
+name: Matrix with Split & Join
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        my_values: ${{ split(',', join(',', ['value1', 'value2', 'value3'])) }}
+    steps:
+      - name: Print values
+        run: echo "My values are ${{ matrix.my_values }}"
