@@ -32,7 +32,6 @@ jobs:
              export ACCOUNT_ID=1234567890
           fi
           echo "account_id=${ACCOUNT_ID}" >> "$GITHUB_OUTPUT"
-          export arr=("f1" "f2" "f3")
           echo "matrix={\"include\":[\"folder1\", \"folder2\"]}" >> "$GITHUB_OUPUT"
   
   print-output:
