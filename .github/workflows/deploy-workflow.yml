@@ -58,7 +58,7 @@ jobs:
     needs: set-account-id
     strategy:
       matrix:
-        folders: join(${{ needs.set-account-id.outputs.folders }}, ",")
+        folders: join(fromJson(${{ needs.set-account-id.outputs.folders }}), ",")
     steps:
       - name: Test matrix
         run: |
