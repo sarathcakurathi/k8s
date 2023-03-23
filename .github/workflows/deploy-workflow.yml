@@ -52,6 +52,17 @@ jobs:
         run: |
           mine=${{ needs.set-account-id.outputs.folders }}
           echo "Folders: ${mine[@]} ${mine[0]}"
+  
+  matrix-array-test:
+    runs-on: ubuntu-latest
+    needs: set-account-id
+    strategy:
+      matrix:
+        folders: join(${{ needs.set-account-id.outputs.folders }}, ",")
+    steps:
+      - name: Test matrix
+        run: |
+          echo "Folder: ${{ matrix.folder }}"
     
 
   trigger-deployment-workflow:
