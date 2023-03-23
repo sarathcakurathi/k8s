@@ -32,8 +32,8 @@ jobs:
              export ACCOUNT_ID=1234567890
           fi
           echo "account_id=${ACCOUNT_ID}" >> "$GITHUB_OUTPUT"
-          arr=("f1" "f2" "f3")
-          echo "folders=${arr}" >> "$GITHUB_OUPUT"
+          export arr=("f1" "f2" "f3")
+          echo "folders=${arr[@]}" >> "$GITHUB_OUPUT"
   
   print-output:
     runs-on: ubuntu-latest
