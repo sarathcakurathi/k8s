@@ -1,6 +1,6 @@
 name: Matrix Test
 on:
-  workflow_call:
+  workflow_dispatch:
 jobs:
   job1:
     runs-on: ubuntu-latest
