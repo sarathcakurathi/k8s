@@ -32,6 +32,7 @@ jobs:
              export ACCOUNT_ID=1234567890
           fi
           echo "account_id=${ACCOUNT_ID}" >> "$GITHUB_OUTPUT"
+          echo "folders=(\"v1\" \"v2\" \"v3\")" >> $GITHUB_OUTPUT
           echo "matrix={\"include\":[\"folder1\", \"folder2\"]}" >> "$GITHUB_OUTPUT"
   
   print-output:
@@ -46,12 +47,10 @@ jobs:
   matrix-test:
     runs-on: ubuntu-latest
     needs: set-account-id
-    strategy:
-      matrix: ${{ fromJSON(needs.set-account-id.outputs.folders) }}
     steps:
       - name: Test matrix
         run: |
-          echo "Folder: ${{ matrix.folder }}"
+          echo "Folders: ${{ needs.set-account-id.outputs.folders }}"
     
 
   trigger-deployment-workflow:
