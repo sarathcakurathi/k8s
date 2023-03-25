@@ -13,6 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
+      - name: 'Get a list of changed files to process'
+        run: |
+          # Fetch enough history for a common merge-base commit
+          git fetch origin ${{ github.event.pull_request.head.ref }} --depth $(( ${{ github.event.pull_request.commits }} + 1 ))
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+
+          # Show only files from the PR with content filtered by specific git status (Added or Modified):
+          git diff-tree --name-only --diff-filter=ACMRT -r \
+            --merge-base origin/${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.head.ref }}
+      
       - name: Get changed files
         id: changes
         run: |
