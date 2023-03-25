@@ -1,6 +1,7 @@
 name: Get commit and file info
 on:
   pull_request:
+    types: [opened, synchronized, edited, reopened]
     branches: [ master ]
 
 jobs:
@@ -12,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
+      - name: Get changed files
+        id: changes
+        run: |
+          echo "files=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+         
       - name: Get commit and file info
         id: folder_check
         run: |
