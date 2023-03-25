@@ -17,6 +17,7 @@ jobs:
         id: changes
         run: |
           echo "files=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+          echo $(git diff-tree --no-commit-id --name-only --diff-filter 'AM' -r HEAD^1 HEAD)
          
       - name: Get commit and file info
         id: folder_check
